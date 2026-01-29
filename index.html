@@ -2,7 +2,9 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pio Surprise</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,27 +18,29 @@
         }
 
         .container {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
             text-align: center;
             position: relative;
         }
 
         h1 {
-            margin-bottom: 40px;
+            font-size: 26px;
+            margin-bottom: 50px;
         }
 
         .buttons {
-            display: flex;
-            justify-content: center;
-            gap: 120px;
             position: relative;
-            height: 60px;
+            width: 100%;
+            height: 120px;
         }
 
         button {
-            padding: 12px 30px;
-            font-size: 16px;
+            font-size: 20px;
+            padding: 16px 28px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
         }
 
@@ -45,11 +49,15 @@
             color: white;
             position: absolute;
             left: 0;
+            top: 30px;
         }
 
         #cantik {
             background: #4CAF50;
             color: white;
+            position: absolute;
+            right: 0;
+            top: 30px;
         }
 
         /* Popup */
@@ -66,24 +74,27 @@
             width: 300px;
             height: 300px;
             background: white;
-            border-radius: 25px;
+            border-radius: 30px;
             padding: 20px;
             box-sizing: border-box;
             text-align: center;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 20px;
+            gap: 24px;
         }
 
         .popup-content p {
-            font-size: 16px;
+            font-size: 18px;
         }
 
         .popup-content button {
             background: #25D366;
             color: white;
+            font-size: 18px;
             font-weight: bold;
+            padding: 14px;
+            border-radius: 12px;
         }
     </style>
 </head>
@@ -92,7 +103,7 @@
 <div class="container">
     <h1>Pio itu cantik atau jelek?</h1>
 
-    <div class="buttons">
+    <div class="buttons" id="area">
         <button id="jelek">Jelek</button>
         <button id="cantik">Cantik</button>
     </div>
@@ -114,44 +125,52 @@
 <audio id="soundCantik" src="assets/audio/success.mp3"></audio>
 
 <script src="assets/js/confetti.js"></script>
+
 <script>
     const jelekBtn = document.getElementById("jelek");
     const cantikBtn = document.getElementById("cantik");
     const popup = document.getElementById("popup");
     const kirimBtn = document.getElementById("kirim");
+    const area = document.getElementById("area");
 
     const soundJelek = document.getElementById("soundJelek");
     const soundCantik = document.getElementById("soundCantik");
 
-    // tombol jelek kabur + sound
-    jelekBtn.addEventListener("mouseenter", () => {
+    jelekBtn.addEventListener("mouseenter", pindah);
+    jelekBtn.addEventListener("touchstart", pindah);
+
+    function pindah() {
         soundJelek.currentTime = 0;
         soundJelek.play();
 
-        const x = Math.random() * 300 - 150;
-        const y = Math.random() * 200 - 100;
+        const areaRect = area.getBoundingClientRect();
 
-        jelekBtn.style.transform = `translate(${x}px, ${y}px)`;
-    });
+        // wilayah kiri saja (aman dari tombol cantik)
+        const maxX = areaRect.width / 2 - jelekBtn.offsetWidth;
+        const maxY = areaRect.height - jelekBtn.offsetHeight;
 
-    // tombol cantik
+        const x = Math.random() * maxX;
+        const y = Math.random() * maxY;
+
+        jelekBtn.style.left = `${x}px`;
+        jelekBtn.style.top = `${y}px`;
+    }
+
     cantikBtn.addEventListener("click", () => {
         soundCantik.play();
         popup.style.display = "flex";
 
-        // confetti kiri
         confetti({
-            particleCount: 100,
+            particleCount: 120,
             angle: 60,
-            spread: 70,
+            spread: 80,
             origin: { x: 0 }
         });
 
-        // confetti kanan
         confetti({
-            particleCount: 100,
+            particleCount: 120,
             angle: 120,
-            spread: 70,
+            spread: 80,
             origin: { x: 1 }
         });
     });
@@ -163,9 +182,7 @@
     });
 
     popup.addEventListener("click", (e) => {
-        if (e.target === popup) {
-            popup.style.display = "none";
-        }
+        if (e.target === popup) popup.style.display = "none";
     });
 </script>
 
