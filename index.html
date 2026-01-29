@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Pio Surprise</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #ffe6f0;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 120px;
+            position: relative;
+            height: 60px;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #jelek {
+            background: #ff6b6b;
+            color: white;
+            position: absolute;
+            left: 0;
+        }
+
+        #cantik {
+            background: #4CAF50;
+            color: white;
+        }
+
+        /* Popup */
+        .popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            width: 300px;
+            height: 300px;
+            background: white;
+            border-radius: 25px;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .popup-content p {
+            font-size: 16px;
+        }
+
+        .popup-content button {
+            background: #25D366;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Pio itu cantik atau jelek?</h1>
+
+    <div class="buttons">
+        <button id="jelek">Jelek</button>
+        <button id="cantik">Cantik</button>
+    </div>
+</div>
+
+<!-- Popup -->
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <p>
+            nah gitu dong mengakui😁<br>
+            klik kirim pesan sekarang ke adam, untuk mengakui.
+        </p>
+        <button id="kirim">Kirim Pesan</button>
+    </div>
+</div>
+
+<!-- Sound -->
+<audio id="soundJelek" src="assets/audio/dodge.mp3"></audio>
+<audio id="soundCantik" src="assets/audio/success.mp3"></audio>
+
+<script src="assets/js/confetti.js"></script>
+<script>
+    const jelekBtn = document.getElementById("jelek");
+    const cantikBtn = document.getElementById("cantik");
+    const popup = document.getElementById("popup");
+    const kirimBtn = document.getElementById("kirim");
+
+    const soundJelek = document.getElementById("soundJelek");
+    const soundCantik = document.getElementById("soundCantik");
+
+    // tombol jelek kabur + sound
+    jelekBtn.addEventListener("mouseenter", () => {
+        soundJelek.currentTime = 0;
+        soundJelek.play();
+
+        const x = Math.random() * 300 - 150;
+        const y = Math.random() * 200 - 100;
+
+        jelekBtn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    // tombol cantik
+    cantikBtn.addEventListener("click", () => {
+        soundCantik.play();
+        popup.style.display = "flex";
+
+        // confetti kiri
+        confetti({
+            particleCount: 100,
+            angle: 60,
+            spread: 70,
+            origin: { x: 0 }
+        });
+
+        // confetti kanan
+        confetti({
+            particleCount: 100,
+            angle: 120,
+            spread: 70,
+            origin: { x: 1 }
+        });
+    });
+
+    kirimBtn.addEventListener("click", () => {
+        const nomor = "628137902804";
+        const pesan = encodeURIComponent("Iya papa sayang, mama cantik kok ❤️");
+        window.location.href = `https://wa.me/${nomor}?text=${pesan}`;
+    });
+
+    popup.addEventListener("click", (e) => {
+        if (e.target === popup) {
+            popup.style.display = "none";
+        }
+    });
+</script>
+
+</body>
+</html>
