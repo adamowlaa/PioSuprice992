@@ -1,190 +1,193 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pio Surprise</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pio Surprise</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #ffe6f0;
-            height: 100vh;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        .container {
-            width: 100%;
-            max-width: 420px;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-        }
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #ffe6f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
 
-        h1 {
-            font-size: 26px;
-            margin-bottom: 50px;
-        }
+    .container {
+      width: 100%;
+      max-width: 480px;
+      padding: 24px;
+      text-align: center;
+    }
 
-        .buttons {
-            position: relative;
-            width: 100%;
-            height: 120px;
-        }
+    h1 {
+      font-size: clamp(28px, 6vw, 36px);
+      margin-bottom: 60px;
+    }
 
-        button {
-            font-size: 20px;
-            padding: 16px 28px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-        }
+    .buttons {
+      position: relative;
+      width: 100%;
+      height: 160px;
+    }
 
-        #jelek {
-            background: #ff6b6b;
-            color: white;
-            position: absolute;
-            left: 0;
-            top: 30px;
-        }
+    button {
+      width: 140px;
+      height: 56px;
+      font-size: 20px;
+      border: none;
+      border-radius: 14px;
+      color: white;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
 
-        #cantik {
-            background: #4CAF50;
-            color: white;
-            position: absolute;
-            right: 0;
-            top: 30px;
-        }
+    #jelek {
+      background: #ff6b6b;
+      position: absolute;
+      left: 10px;
+      top: 50px;
+    }
 
-        /* Popup */
-        .popup {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
+    #cantik {
+      background: #4CAF50;
+      position: absolute;
+      right: 10px;
+      top: 50px;
+    }
 
-        .popup-content {
-            width: 300px;
-            height: 300px;
-            background: white;
-            border-radius: 30px;
-            padding: 20px;
-            box-sizing: border-box;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 24px;
-        }
+    /* Popup */
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
 
-        .popup-content p {
-            font-size: 18px;
-        }
+    .popup-content {
+      width: 320px;
+      height: 320px;
+      background: white;
+      border-radius: 28px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+      text-align: center;
+    }
 
-        .popup-content button {
-            background: #25D366;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 14px;
-            border-radius: 12px;
-        }
-    </style>
+    .popup-content p {
+      font-size: 18px;
+    }
+
+    .popup-content button {
+      width: 100%;
+      height: 54px;
+      font-size: 18px;
+      background: #25D366;
+      border-radius: 14px;
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
+  <div class="container">
     <h1>Pio itu cantik atau jelek?</h1>
 
     <div class="buttons" id="area">
-        <button id="jelek">Jelek</button>
-        <button id="cantik">Cantik</button>
+      <button id="jelek">Jelek</button>
+      <button id="cantik">Cantik</button>
     </div>
-</div>
+  </div>
 
-<!-- Popup -->
-<div class="popup" id="popup">
+  <!-- Popup -->
+  <div class="popup" id="popup">
     <div class="popup-content">
-        <p>
-            nah gitu dong mengakui😁<br>
-            klik kirim pesan sekarang ke adam, untuk mengakui.
-        </p>
-        <button id="kirim">Kirim Pesan</button>
+      <p>
+        nah gitu dong mengakui😁<br>
+        klik kirim pesan sekarang ke adam, untuk mengakui.
+      </p>
+      <button id="kirim">Kirim Pesan</button>
     </div>
-</div>
+  </div>
 
-<!-- Sound -->
-<audio id="soundJelek" src="assets/audio/dodge.mp3"></audio>
-<audio id="soundCantik" src="assets/audio/success.mp3"></audio>
+  <!-- Sound -->
+  <audio id="soundJelek" src="assets/audio/dodge.mp3"></audio>
+  <audio id="soundCantik" src="assets/audio/success.mp3"></audio>
 
-<script src="assets/js/confetti.js"></script>
+  <!-- Confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-<script>
-    const jelekBtn = document.getElementById("jelek");
-    const cantikBtn = document.getElementById("cantik");
+  <script>
+    const jelek = document.getElementById("jelek");
+    const cantik = document.getElementById("cantik");
     const popup = document.getElementById("popup");
-    const kirimBtn = document.getElementById("kirim");
+    const kirim = document.getElementById("kirim");
     const area = document.getElementById("area");
 
-    const soundJelek = document.getElementById("soundJelek");
-    const soundCantik = document.getElementById("soundCantik");
+    const sJelek = document.getElementById("soundJelek");
+    const sCantik = document.getElementById("soundCantik");
 
-    jelekBtn.addEventListener("mouseenter", pindah);
-    jelekBtn.addEventListener("touchstart", pindah);
+    function pindahJelek() {
+      sJelek.currentTime = 0;
+      sJelek.play();
 
-    function pindah() {
-        soundJelek.currentTime = 0;
-        soundJelek.play();
+      const areaW = area.clientWidth;
+      const areaH = area.clientHeight;
 
-        const areaRect = area.getBoundingClientRect();
+      const maxX = areaW / 2 - jelek.offsetWidth - 10;
+      const maxY = areaH - jelek.offsetHeight;
 
-        // wilayah kiri saja (aman dari tombol cantik)
-        const maxX = areaRect.width / 2 - jelekBtn.offsetWidth;
-        const maxY = areaRect.height - jelekBtn.offsetHeight;
+      const x = Math.random() * Math.max(maxX, 20);
+      const y = Math.random() * Math.max(maxY, 20);
 
-        const x = Math.random() * maxX;
-        const y = Math.random() * maxY;
-
-        jelekBtn.style.left = `${x}px`;
-        jelekBtn.style.top = `${y}px`;
+      jelek.style.left = `${x}px`;
+      jelek.style.top = `${y}px`;
     }
 
-    cantikBtn.addEventListener("click", () => {
-        soundCantik.play();
-        popup.style.display = "flex";
+    // UNLIMITED spam (mouse + touch)
+    jelek.addEventListener("pointerdown", pindahJelek);
 
-        confetti({
-            particleCount: 120,
-            angle: 60,
-            spread: 80,
-            origin: { x: 0 }
-        });
+    cantik.addEventListener("click", () => {
+      sCantik.play();
+      popup.style.display = "flex";
 
-        confetti({
-            particleCount: 120,
-            angle: 120,
-            spread: 80,
-            origin: { x: 1 }
-        });
+      confetti({
+        particleCount: 140,
+        angle: 60,
+        spread: 80,
+        origin: { x: 0 }
+      });
+
+      confetti({
+        particleCount: 140,
+        angle: 120,
+        spread: 80,
+        origin: { x: 1 }
+      });
     });
 
-    kirimBtn.addEventListener("click", () => {
-        const nomor = "628137902804";
-        const pesan = encodeURIComponent("Iya papa sayang, mama cantik kok ❤️");
-        window.location.href = `https://wa.me/${nomor}?text=${pesan}`;
+    kirim.addEventListener("click", () => {
+      const pesan = encodeURIComponent("Iya papa sayang, mama cantik kok ❤️");
+      window.location.href =
+        "https://wa.me/628137902804?text=" + pesan;
     });
 
-    popup.addEventListener("click", (e) => {
-        if (e.target === popup) popup.style.display = "none";
+    popup.addEventListener("click", e => {
+      if (e.target === popup) popup.style.display = "none";
     });
-</script>
+  </script>
 
 </body>
 </html>
